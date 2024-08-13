@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Validation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#news-form {
+  width: 50%;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#news-text {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+}
+
+#detect-btn {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#detect-btn:hover {
+  background-color: #3e8e41;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+<body>
+    <header>
+        <h1>Credit Card Validation</h1>
+    </header>
+    <main>
+        <form id="creditCardForm">
+            <label for="cardNumber">Credit Card Number:</label>
+            <input type="text" id="cardNumber" placeholder="Enter card number" required>
+            <button type="submit">Validate</button>
+            <p id="message"></p>
+        </form>
+    </main>
+    <script src="script.js">
+        const newsForm = document.getElementById('news-form');
+const newsText = document.getElementById('news-text');
+const detectBtn = document.getElementById('detect-btn');
+const resultDiv = document.getElementById('result');
+
+detectBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  const newsArticle = newsText.value.trim();
+  if (newsArticle === '') {
+    alert('Please enter a news article');
+    return;
+  }
+  const apiUrl = 'https://your-api-url.com/fake-news-detection';
+  const payload = {
+    text: newsArticle
+  };
+  fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    const prediction = data.prediction;
+    if (prediction === 'fake') {
+      resultDiv.innerHTML = '<p style="color: red;">This news article is likely fake.</p>';
+    } else {
+      resultDiv.innerHTML = '<p style="color: green;">This news article is likely real.</p>';
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+    resultDiv.innerHTML = '<p>Error: Unable to detect fake news.</p>';
+  });
+});
+    </script>
+</body>
+</html>
